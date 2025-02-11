@@ -12,6 +12,12 @@ public class ResourceController {
 
     @GetMapping
     public String getResource(@AuthenticationPrincipal Jwt jwt) {
-        return jwt.getTokenValue();
+        var strBuilder = new StringBuilder();
+        strBuilder.append("<p>JWT Token: %s</p>".formatted(jwt.getTokenValue()));
+        strBuilder.append("<p>JWT Headers: %s</p>".formatted(jwt.getHeaders()));
+        strBuilder.append("<p>JWT Claims: %s</p>".formatted(jwt.getClaims().toString()));
+        strBuilder.append("<p>Resource accessed by: %s (with subject: %s)</p>".formatted(jwt.getClaim("preferred_username"),
+                jwt.getSubject()));
+        return strBuilder.toString();
     }
 }
